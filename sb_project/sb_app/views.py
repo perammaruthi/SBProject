@@ -4,12 +4,13 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin, ListModelMixin, DestroyModelMixin
 
-from sb_app.models import Transaction
-from sb_app.serializers import UserSerializer, TransactionSerializer
+from sb_app.models import Transaction, UserProfile
+from sb_app.serializers import UserSerializer, TransactionSerializer, UserProfileSerializer
 
 
-class CreateUserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [AllowAny]
@@ -36,3 +37,13 @@ class CreateTransactionViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()
 
+
+class UserProfileViewSet(
+    UpdateModelMixin,
+    RetrieveModelMixin,
+    ListModelMixin,
+    DestroyModelMixin,
+    viewsets.GenericViewSet
+):
+    serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
